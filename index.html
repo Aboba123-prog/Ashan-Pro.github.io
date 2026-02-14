@@ -1,71 +1,43 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <title>Ashan Pro</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/Ashan_Logo.png" type="image/png">
-    <meta name="viewport" content="width=1200">
+    <!-- Changed meta tag for true responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 </head>
-
 <body>
-    <div class="background"></div>
-
-
-    
-    <div class="container">
-        <div class="top-bar">
-            <h1>Ashan Pro 🚀</h1>
-            <div id="clock"></div>
-        </div>
-
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Введите запрос..." autocomplete="off">
-            <button onclick="search()">Поиск</button>
-            
-        </div>
-
-<h4 class="choice">Выбор поисковика</h4>
-        <div class="engines">
-            <div class="engine-card" onclick="setEngine('google')"><img
-                    style="width: 25px; height: 25px; border-radius: 20px;" align="center"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSifcM3HiwNTXF8iC4Ed8AnszWGngiFXkXBOA&s"
-                    alt=""></div>
-            <div class="engine-card" onclick="setEngine('yandex')"><img
-                    style="width: px; height: 25px; border-radius: 20px;" align="center"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd0HKG8t9u3Juzy-yNXmOCaRPRTufcdXjNRg&s"
-                    alt=""></div>
-            <div class="engine-card" onclick="setEngine('duckduckgo')"><img
-                    style="width: 25px; height: 25px; border-radius: 20px;" align="center"
-                    src="https://play-lh.googleusercontent.com/NW2ASwJ4qtxfThhVIpm4641sR4o-yGv80yqaJnOnpC4lEmdxEcNTFcF6-TlZYtmdaA"
-                    alt=""></div>
-            <div class="engine-card" onclick="setEngine('bing')"><img
-                    style="width: 17px; height: 25px; border-radius: 20px;" align="center"
-                    src="https://brandlogos.net/wp-content/uploads/2021/02/bing_icon-logo_brandlogos.net_8ham2-512x757.png"
-                    alt=""></div>
-            <div class="engine-card" onclick="setEngine('yahoo')"><img
-                    style="width: 44px; height: 25px; border-radius: 20px;" align="center"
-                    src="https://logos-world.net/wp-content/uploads/2020/10/Yahoo-Emblem.png" alt=""></div>
-                    <button style="width: 70px; height: 50px; border-radius: 20px;"  onclick="openWithProxy()">🛡️VPN</button>
-        </div>
-
-
-
-        
-        <div class="controls">
-            <button style="width: 70px; height: 50px; border-radius: 20px;" align="center" onclick="toggleTheme()">🌗
-                Тема</button>
-        </div>
+<!-- Rest of the HTML content remains the same -->
+<div class="background"></div>
+<div class="container">
+    <div class="top-bar">
+        <h1>Ashan Pro 🚀</h1>
+        <div id="clock"></div>
     </div>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Введите запрос..." autocomplete="off">
+        <button onclick="search()">Поиск</button>
+    </div>
+    <h4 class="choice">Выбор поисковика</h4>
+    <div class="engines">
+        <div class="engine-card" onclick="setEngine('google')"><img style="width: auto; height: 25px; border-radius: 20px;" align="center" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSifcM3HiwNTXF8iC4Ed8AnszWGngiFXkXBOA&s" alt=""></div>
+        <div class="engine-card" onclick="setEngine('yandex')"><img style="width: auto; height: 25px; border-radius: 20px;" align="center" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd0HKG8t9u3Juzy-yNXmOCaRPRTufcdXjNRg&s" alt=""></div>
+        <div class="engine-card" onclick="setEngine('duckduckgo')"><img style="width: auto; height: 25px; border-radius: 20px;" align="center" src="https://play-lh.googleusercontent.com/NW2ASwJ4qtxfThhVIpm4641sR4o-yGv80yqaJnOnpC4lEmdxEcNTFcF6-TlZYtmdaA" alt=""></div>
+        <div class="engine-card" onclick="setEngine('bing')"><img style="width: auto; height: 25px; border-radius: 20px;" align="center" src="https://brandlogos.net/wp-content/uploads/2021/02/bing_icon-logo_brandlogos.net_8ham2-512x757.png" alt=""></div>
+        <div class="engine-card" onclick="setEngine('yahoo')"><img style="width: auto; height: 25px; border-radius: 20px;" align="center" src="https://logos-world.net/wp-content/uploads/2020/10/Yahoo-Emblem.png" alt=""></div>
+        <button onclick="openWithProxy()">🛡️VPN</button>
+    </div>
+    <div class="controls">
+        <button align="center" onclick="toggleTheme()">🌗 Тема</button>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
 
 
-    
-
-    
-    <script src="script.js"></script>
-
-    </
 
 
 
