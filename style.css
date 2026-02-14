@@ -16,7 +16,7 @@ body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
     color: var(--text);
-    /* Removed overflow hidden to allow vertical scrolling if needed on small screens */
+    overflow: hidden;
 }
 
 .background {
@@ -33,15 +33,13 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh; /* Use min-height to allow content to grow */
-    padding: 20px; /* Added padding for small screens */
-    box-sizing: border-box; /* Ensures padding is included in width/height calculation */
+    height: 100vh;
 }
 
 .top-bar {
     display: flex;
     justify-content: space-between;
-    width: 100%; /* Changed from 90% to 100% for better mobile fit */
+    width: 90%;
     max-width: 600px;
     align-items: center;
 }
@@ -49,13 +47,12 @@ body {
 #clock {
     font-size: 18px;
     opacity: 0.8;
-    color: var(--text); /* Changed from white to var(--text) for theme compatibility */
 }
 
 .search-box {
     margin-top: 30px;
     display: flex;
-    width: 100%; /* Changed from 90% to 100% for better mobile fit */
+    width: 90%;
     max-width: 500px;
 }
 
@@ -66,7 +63,6 @@ input {
     border: 2px solid var(--accent);
     outline: none;
     font-size: 16px;
-    box-sizing: border-box; /* Ensures padding is included in width calculation */
 }
 
 button {
@@ -93,7 +89,6 @@ body.dark button {
     flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
-    width: 100%; /* Ensures engines use full width on mobile */
 }
 
 .engine-card {
@@ -103,17 +98,7 @@ body.dark button {
     backdrop-filter: blur(10px);
     cursor: pointer;
     transition: 0.3s;
-    /* Removed fixed width/height on mobile, allowing flexbox to manage layout */
 }
-
-.engine-card img {
-    /* Adjusted image styles for consistency and responsiveness */
-    width: auto;
-    height: 25px;
-    border-radius: 20px;
-    display: block; /* Helps center the image if needed */
-}
-
 
 .engine-card:hover {
     background: var(--accent);
@@ -123,79 +108,50 @@ body.dark button {
 
 .controls {
     margin-top: 30px;
-    /* Removed border-radius: 50% and padding here, added styles directly to the button */
+    border-radius: 50%;
+    padding: 10px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
     cursor: pointer;
     transition: 0.3s;
 }
 
-/* Styles for specific buttons to match previous design intents */
-.controls button,
-.engines button {
-    width: auto !important; /* Override inline styles to be more flexible */
-    height: 50px;
-    border-radius: 20px !important; /* Override inline styles */
-    padding: 0 20px; /* Add padding for better touch area */
-}
-
-
-.choice {
-    margin-bottom: 0;
-    margin-top: 30px; /* Added margin-top for spacing on mobile */
-}
-
-/* Media query for larger screens (typical desktop width, based on original meta viewport) */
-@media (min-width: 1200px) {
-    .container {
-        /* Restore original behavior for desktop views */
-        height: 100vh;
-        min-height: auto;
-    }
-    .top-bar {
-        width: 90%;
-    }
-    .search-box {
-        width: 90%;
-    }
-    .engines {
-        flex-direction: row; /* Ensure horizontal layout on desktop */
-    }
-    .controls {
-        flex-direction: row;
-    }
-}
-
-/* Media query for mobile devices (adjustments for small screens) */
 @media (max-width: 600px) {
-    .top-bar {
-        flex-direction: column; /* Stack H1 and Clock vertically */
-        text-align: center;
-        gap: 10px;
-    }
-    #clock {
-        font-size: 16px;
-    }
-    .engines,
-    .controls {
+    .engines {
         flex-direction: column;
         align-items: center;
     }
-    button, input {
-        border-radius: 0; /* Simpler look on mobile */
-    }
-    input {
-        border-radius: 15px 0 0 15px;
-    }
-    button {
-        border-radius: 0 15px 15px 0;
-    }
-    .controls button, .engines button {
-        width: 100% !important; /* Full width buttons for easier clicking */
-        max-width: 200px;
-        margin-bottom: 10px; /* Spacing between buttons */
-    }
-    .engine-card {
-        width: 100%; /* Full width cards */
-        max-width: 200px;
-        text-align: center;
+}
+
+#clock {
+    color: white;
+}
+
+.choice{
+      margin-bottom: 0
+}
+
+/* Принудительный режим ПК */
+body {
+    min-width: 1200px !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+
+.container {
+    width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+/* Удаление адаптивного перестроения кнопок в колонку */
+.engines {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+}
+
+/* Отмена медиа-запросов, если они были загружены ранее */
+@media (max-width: 600px) {
+    .engines {
+        flex-direction: row !important;
     }
 }
