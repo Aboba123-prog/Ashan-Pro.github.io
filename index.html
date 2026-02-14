@@ -59,7 +59,31 @@
         </div>
     </div>
 
+<script>
+function removeAds() {
+    const adSelectors = [
+        'iframe[src*="ads"]',
+        'iframe[src*="doubleclick"]',
+        'div[id*="ad"]',
+        'div[class*="ad"]',
+        'div[class*="banner"]',
+        '.ads',
+        '.advertisement'
+    ];
 
+    adSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+            el.remove();
+        });
+    });
+}
+
+// Запуск при загрузке
+window.onload = removeAds;
+
+// Проверка каждые 2 секунды (если реклама появляется позже)
+setInterval(removeAds, 2000);
+</script>
 
 
 
