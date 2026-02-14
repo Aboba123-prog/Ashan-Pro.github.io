@@ -25,6 +25,32 @@ function search() {
     window.open(url, "_blank");
 }
 
+function startVoiceSearch() {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Ваш браузер не поддерживает голосовой ввод");
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "ru-RU"; // можно поменять язык
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        const speechResult = event.results[0][0].transcript;
+        document.getElementById("searchInput").value = speechResult;
+        
+        // Автоматический поиск (если нужно)
+        // window.location.href = "https://www.google.com/search?q=" + speechResult;
+    };
+
+    recognition.onerror = function(event) {
+        alert("Ошибка распознавания: " + event.error);
+    };
+}
+
 document.getElementById("searchInput").addEventListener("keydown", function(e) {
     if (e.key === "Enter") search();
 });
@@ -72,3 +98,9 @@ function openWithProxy() {
     
     window.open(proxyURL + encodeURIComponent(target), "_blank");
 }
+
+
+
+
+
+
