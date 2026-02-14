@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://https://aboba123-prog.github.io/Ashan-Pro.github.io/
