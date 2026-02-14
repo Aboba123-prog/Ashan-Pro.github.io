@@ -6,7 +6,6 @@
     <title>Ashan Pro</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/ChatGPT Image 14 февр. 2026 г., 22_57_17.png" type="image/png">
-    <meta name="viewport" content="width=1200">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -14,7 +13,7 @@
     <div class="background"></div>
 
 
-    
+
     <div class="container">
         <div class="top-bar">
             <h1>Ashan Pro 🚀</h1>
@@ -23,11 +22,11 @@
 
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Введите запрос..." autocomplete="off">
-            <button onclick="search()">Поиск</button>
-            
+            <button style="border-radius: 0px;" onclick="search()">🔍</button>
+            <button  onclick="startVoiceSearch()">🗣️</button>
         </div>
 
-<h4 class="choice">Выбор поисковика</h4>
+        <h4 class="choice">Выбор поисковика</h4>
         <div class="engines">
             <div class="engine-card" onclick="setEngine('google')"><img
                     style="width: 25px; height: 25px; border-radius: 20px;" align="center"
@@ -48,12 +47,12 @@
             <div class="engine-card" onclick="setEngine('yahoo')"><img
                     style="width: 44px; height: 25px; border-radius: 20px;" align="center"
                     src="https://logos-world.net/wp-content/uploads/2020/10/Yahoo-Emblem.png" alt=""></div>
-                    <button style="width: 70px; height: 50px; border-radius: 20px;"  onclick="openWithProxy()">🛡️VPN</button>
+            <button style="width: 70px; height: 50px; border-radius: 20px;" onclick="openWithProxy()">🛡️VPN</button>
         </div>
 
 
 
-        
+
         <div class="controls">
             <button style="width: 70px; height: 50px; border-radius: 20px;" align="center" onclick="toggleTheme()">🌗
                 Тема</button>
@@ -61,10 +60,8 @@
     </div>
 
 
-    
 
-    
+
+
     <script src="script.js"></script>
     </
-
-
