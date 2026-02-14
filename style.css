@@ -131,27 +131,49 @@ body.dark button {
       margin-bottom: 0
 }
 
-/* Принудительный режим ПК */
+/* Улучшенная адаптивность */
 body {
-    min-width: 1200px !important;
-    overflow-x: auto !important;
-    overflow-y: auto !important;
+    overflow-x: hidden; /* Убираем горизонтальную полосу прокрутки */
+    overflow-y: auto;
+    min-height: 100vh;
 }
 
 .container {
-    width: 1200px !important;
-    margin: 0 auto !important;
+    width: 95%; /* Занимает почти всю ширину на мобильных */
+    max-width: 1200px; /* Но не больше 1200px на ПК */
+    height: auto;
+    min-height: 100vh;
+    padding: 20px 0;
+    margin: 0 auto;
 }
 
-/* Удаление адаптивного перестроения кнопок в колонку */
+.search-box {
+    width: 100%;
+    max-width: 600px; /* Ограничиваем ширину поиска */
+}
+
+/* Настройка плитки поисковиков */
 .engines {
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
+    display: flex;
+    flex-wrap: wrap; /* Разрешаем перенос, если не влезает */
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 800px;
 }
 
-/* Отмена медиа-запросов, если они были загружены ранее */
-@media (max-width: 600px) {
-    .engines {
-        flex-direction: row !important;
-    }
+.engine-card {
+    flex: 0 1 auto; /* Кнопки подстраиваются под контент */
+    min-width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Исправление отображения на очень узких экранах */
+@media (max-width: 480px) {
+    h1 { font-size: 24px; }
+    .top-bar { flex-direction: column; gap: 10px; }
+    input { font-size: 14px; padding: 12px; }
+    button { padding: 12px 15px; }
 }
