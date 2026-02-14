@@ -26,30 +26,45 @@ function search() {
 }
 
 function startVoiceSearch() {
-    if (!('webkitSpeechRecognition' in window)) {
-        alert("Ваш браузер не поддерживает голосовой ввод");
+    const input = document.getElementById('searchInput');
+    
+    // Проверка поддержки браузером
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+        alert("Ваш браузер не поддерживает голосовой ввод.");
         return;
     }
 
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = "ru-RU"; // можно поменять язык
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'ru-RU'; // Установка языка
+    recognition.interimResults = false; // Ждем финального результата
+
+    // Визуальный фидбек (опционально)
+    input.placeholder = "Слушаю...";
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript; // Вставляем распознанный текст
+        input.placeholder = "Введите запрос...";
+    };
+
+    recognition.onerror = (event) => {
+        console.error("Ошибка распознавания:", event.error);
+        input.value = ""; // Очищаем поле при ошибке
+        input.placeholder = "Введите запрос..."; // Возвращаем стандартный плейсхолдер
+    };
+
+    recognition.onend = () => {
+        // Если поле осталось пустым после окончания сессии
+        if (input.value === "") {
+            input.placeholder = "Введите запрос...";
+        }
+    };
 
     recognition.start();
-
-    recognition.onresult = function(event) {
-        const speechResult = event.results[0][0].transcript;
-        document.getElementById("searchInput").value = speechResult;
-        
-        // Автоматический поиск (если нужно)
-        // window.location.href = "https://www.google.com/search?q=" + speechResult;
-    };
-
-    recognition.onerror = function(event) {
-        alert("Ошибка распознавания: " + event.error);
-    };
 }
+
 
 document.getElementById("searchInput").addEventListener("keydown", function(e) {
     if (e.key === "Enter") search();
@@ -98,9 +113,6 @@ function openWithProxy() {
     
     window.open(proxyURL + encodeURIComponent(target), "_blank");
 }
-
-
-
 
 
 
