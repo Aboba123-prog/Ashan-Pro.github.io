@@ -127,20 +127,23 @@ body.dark button {
     color: white;
 }
 
-.choice{
-      margin-bottom: 0
+.choice {
+    margin-bottom: 0
 }
 
 /* Улучшенная адаптивность */
 body {
-    overflow-x: hidden; /* Убираем горизонтальную полосу прокрутки */
+    overflow-x: hidden;
+    /* Убираем горизонтальную полосу прокрутки */
     overflow-y: auto;
     min-height: 100vh;
 }
 
 .container {
-    width: 95%; /* Занимает почти всю ширину на мобильных */
-    max-width: 1200px; /* Но не больше 1200px на ПК */
+    width: 95%;
+    /* Занимает почти всю ширину на мобильных */
+    max-width: 1200px;
+    /* Но не больше 1200px на ПК */
     height: auto;
     min-height: 100vh;
     padding: 20px 0;
@@ -149,13 +152,15 @@ body {
 
 .search-box {
     width: 100%;
-    max-width: 600px; /* Ограничиваем ширину поиска */
+    max-width: 600px;
+    /* Ограничиваем ширину поиска */
 }
 
 /* Настройка плитки поисковиков */
 .engines {
     display: flex;
-    flex-wrap: wrap; /* Разрешаем перенос, если не влезает */
+    flex-wrap: wrap;
+    /* Разрешаем перенос, если не влезает */
     justify-content: center;
     gap: 10px;
     width: 100%;
@@ -163,7 +168,8 @@ body {
 }
 
 .engine-card {
-    flex: 0 1 auto; /* Кнопки подстраиваются под контент */
+    flex: 0 1 auto;
+    /* Кнопки подстраиваются под контент */
     min-width: 60px;
     display: flex;
     justify-content: center;
@@ -172,57 +178,72 @@ body {
 
 /* Исправление отображения на очень узких экранах */
 @media (max-width: 480px) {
-    h1 { font-size: 24px; }
-    .top-bar { flex-direction: column; gap: 10px; }
-    input { font-size: 14px; padding: 12px; }
-    button { padding: 12px 15px; }
-}
-/* ================= МОБИЛЬНАЯ АДАПТАЦИЯ ================= */
-
-@media screen and (max-width: 768px) {
-
-    .container {
-        justify-content: flex-start;
-        padding-top: 12vh;
+    h1 {
+        font-size: 24px;
     }
 
-    .search-box {
-        max-width: 400px;
+    .top-bar {
+        flex-direction: column;
+        gap: 10px;
     }
 
-    .search-box input {
+    input {
         font-size: 14px;
         padding: 12px;
     }
 
-    .search-box button {
+    button {
         padding: 12px 15px;
-    }
-
-    /* 4 кнопки = 2 + 2 */
-    .engine-card {
-        flex: 0 1 calc(50% - 10px);
-        max-width: 170px;
-        padding: 8px 12px;
-    }
-
-    /* 5-я кнопка (Yahoo) по центру */
-    .engine-card:nth-child(5) {
-        flex: 0 1 100%;
-        display: flex;
-        justify-content: center;
-    }
-
-    /* Тема + VPN остаются в паре */
-    .controls button {
-        width: 150px;
-        height: 50px;
-        font-size: 14px;
-        border-radius: 12px;
     }
 }
 
+/* Адаптация размеров под мобильные устройства */
+@media (max-width: 768px) {
+    .container {
+        justify-content: flex-start;
+        /* Прижимаем к верху, чтобы не плавало */
+        padding-top: 15vh;
+    }
 
+    /* Уменьшаем заголовок и поиск */
+    h1 {
+        font-size: 1.8rem;
+    }
 
+    .search-box {
+        width: 95%;
+        /* Не даем растягиваться на весь экран */
+        max-width: 400px;
+    }
 
+    input {
+        padding: 10px 15px;
+        font-size: 14px;
+        /* Меньше текст в поиске */
+    }
 
+    button {
+        padding: 10px 15px;
+    }
+
+    /* Делаем сетку поисковиков компактнее */
+    .engines {
+        gap: 8px;
+        max-width: 90%;
+    }
+
+    .engine-card {
+        padding: 8px 12px;
+        transform: scale(0.9);
+        /* Пропорциональное уменьшение карточек */
+    }
+
+    /* Чтобы VPN и Тема не были огромными */
+    .engines button,
+    .controls button {
+        width: 60px !important;
+        height: 40px !important;
+        font-size: 12px;
+        padding: 0 !important;
+    }
+}
