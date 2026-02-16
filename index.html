@@ -12,56 +12,66 @@
 <body>
     <div class="background"></div>
 
-
-
     <div class="container">
         <div class="top-bar">
-            <h1>Ashan Pro 🚀</h1>
-           <div style="color: black;" id="clock"></div>
+            <h1 id="name">Ashan Pro🚀</h1>
+            <div id="currentEngineLabel" class="engine-label">
+    Google
+</div>
         </div>
 
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Введите запрос..." autocomplete="off">
-            <button style="border-radius: 0px;" onclick="search()">🔍</button>
-            <button  onclick="startVoiceSearch()">🗣️</button>
-        </div>
+        
+<div class="search-wrapper">
+    <div id="clock" class="clock-top"></div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Введите запрос..." autocomplete="off">
+        <button style="border-radius: 0px;" onclick="search()">🔍</button>
+        <button onclick="startVoiceSearch()">🗣️</button>
+    </div>
+</div>
 
         <h4 class="choice">Выбор поисковика</h4>
+
         <div class="engines">
-            <div class="engine-card" onclick="setEngine('google')"><img
-                    style="width: 25px; height: 25px; border-radius: 20px;" align="center"
-                    src="img/google.jfif"
-                    alt=""></div>
-            <div class="engine-card" onclick="setEngine('yandex')"><img
-                    style="width: px; height: 25px; border-radius: 20px;" align="center"
-                    src="img/yandex.png"
-                    alt=""></div>
-            <div class="engine-card" onclick="setEngine('duckduckgo')"><img
-                    style="width: 25px; height: 25px; border-radius: 20px;" align="center"
-                    src="img/duckduckgo.png"
-                    alt=""></div>
-            <div class="engine-card" onclick="setEngine('bing')"><img
-                    style="width: 17px; height: 25px; border-radius: 20px;" align="center"
-                    src="img/bing.png"
-                    alt=""></div>
-            <div class="engine-card" onclick="setEngine('yahoo')"><img
-                    style="width: 44px; height: 25px; border-radius: 20px;" align="center"
-                    src="img/yahoo.png" alt=""></div>
-            <button style="width: 70px; height: 50px; border-radius: 20px;" onclick="openWithProxy()">🛡️VPN</button>
+            <div class="engine-card" onclick="setEngine('google')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSifcM3HiwNTXF8iC4Ed8AnszWGngiFXkXBOA&s"
+                     style="width:25px;height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <div class="engine-card" onclick="setEngine('yandex')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd0HKG8t9u3Juzy-yNXmOCaRPRTufcdXjNRg&s"
+                     style="height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <div class="engine-card" onclick="setEngine('duckduckgo')">
+                <img src="https://play-lh.googleusercontent.com/NW2ASwJ4qtxfThhVIpm4641sR4o-yGv80yqaJnOnpC4lEmdxEcNTFcF6-TlZYtmdaA"
+                     style="width:25px;height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <div class="engine-card" onclick="setEngine('bing')">
+                <img src="https://brandlogos.net/wp-content/uploads/2021/02/bing_icon-logo_brandlogos.net_8ham2-512x757.png"
+                     style="height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <div class="engine-card" onclick="setEngine('yahoo')">
+                <img src="https://logos-world.net/wp-content/uploads/2020/10/Yahoo-Emblem.png"
+                     style="height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <button onclick="openWithProxy()" style="width:70px;height:50px;border-radius:20px;">🛡️VPN</button>
         </div>
 
-
-
-
         <div class="controls">
-            <button style="width: 70px; height: 50px; border-radius: 20px;" align="center" onclick="toggleTheme()">🌗
-                Тема</button>
+            <button onclick="toggleTheme()" style="width:70px;height:50px;border-radius:20px;">
+                🌗 Тема
+            </button>
         </div>
     </div>
 
 <script>
 function removeAds() {
-    const adSelectors = [
+    const selectors = [
         'iframe[src*="ads"]',
         'iframe[src*="doubleclick"]',
         'div[id*="ad"]',
@@ -71,26 +81,15 @@ function removeAds() {
         '.advertisement'
     ];
 
-    adSelectors.forEach(selector => {
-        document.querySelectorAll(selector).forEach(el => {
-            el.remove();
-        });
-    });
+    selectors.forEach(selector =>
+        document.querySelectorAll(selector).forEach(el => el.remove())
+    );
 }
 
-// Запуск при загрузке
-window.onload = removeAds;
-
-// Проверка каждые 2 секунды (если реклама появляется позже)
+window.addEventListener("load", removeAds);
 setInterval(removeAds, 2000);
 </script>
 
-
-
-    <script src="script.js"></script>
-    </
-
-
-
-
-
+<script src="script.js"></script>
+</body>
+</html>
