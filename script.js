@@ -6,19 +6,20 @@ const engines = {
     bing: "https://www.bing.com/search?q="
 };
 
-
-
-
 let currentEngine = localStorage.getItem("engine") || "google";
+
+const engineLabel = document.getElementById("currentEngineLabel");
 
 function setEngine(engine) {
     currentEngine = engine;
     localStorage.setItem("engine", engine);
-    alert("Выбран поисковик: " + engine);
+
+    engineLabel.textContent = engine.charAt(0).toUpperCase() + engine.slice(1);
 }
 
 function search() {
-    const query = document.getElementById("searchInput").value;
+    const input = document.getElementById("searchInput");
+    const query = input.value;
     if (!query) return;
 
     const url = engines[currentEngine] + encodeURIComponent(query);
@@ -26,96 +27,76 @@ function search() {
 }
 
 function startVoiceSearch() {
-    const input = document.getElementById('searchInput');
-    
-    // Проверка поддержки браузером
+    const input = document.getElementById("searchInput");
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    
+
     if (!SpeechRecognition) {
         alert("Ваш браузер не поддерживает голосовой ввод.");
         return;
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = 'ru-RU'; // Установка языка
-    recognition.interimResults = false; // Ждем финального результата
+    recognition.lang = "ru-RU";
+    recognition.interimResults = false;
 
-    // Визуальный фидбек (опционально)
     input.placeholder = "Слушаю...";
 
     recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        input.value = transcript; // Вставляем распознанный текст
+        input.value = event.results[0][0].transcript;
         input.placeholder = "Введите запрос...";
     };
 
-    recognition.onerror = (event) => {
-        console.error("Ошибка распознавания:", event.error);
-        input.value = ""; // Очищаем поле при ошибке
-        input.placeholder = "Введите запрос..."; // Возвращаем стандартный плейсхолдер
+    recognition.onerror = () => {
+        input.value = "";
+        input.placeholder = "Введите запрос...";
     };
 
     recognition.onend = () => {
-        // Если поле осталось пустым после окончания сессии
-        if (input.value === "") {
-            input.placeholder = "Введите запрос...";
-        }
+        if (!input.value) input.placeholder = "Введите запрос...";
     };
 
     recognition.start();
 }
 
-
-document.getElementById("searchInput").addEventListener("keydown", function(e) {
+document.getElementById("searchInput").addEventListener("keydown", function (e) {
     if (e.key === "Enter") search();
 });
 
 function toggleTheme() {
-    const isDark = document.body.classList.toggle('dark');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    
-    // Явно меняем цвет текста часов
-    const clock = document.getElementById('clock');
-    clock.style.color = isDark ? 'white' : 'black'; 
+    const isDark = document.body.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+
+    const clock = document.getElementById("clock");
+    clock.style.color = isDark ? "white" : "black";
 }
 
-
-window.onload = function() {
-    document.getElementById("searchInput").focus();
-
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark");
-    }
-
-    setInterval(() => {
-        const now = new Date();
-        document.getElementById("clock").textContent =
-            now.toLocaleTimeString();
-            
-    }, 1000);
-};
-
-
-
 function openWithProxy() {
-    const query = document.getElementById('searchInput').value; // исправлены кавычки
+    const input = document.getElementById("searchInput");
+    const query = input.value;
 
     if (!query) {
-        alert("VPN не может быть активирован без запроса!"); // Сообщение, если поле пустое
+        alert("VPN не может быть активирован без запроса!");
         return;
     }
 
-    // Сообщение перед открытием (опционально)
-    console.log("Открываю VPN для запроса: " + query);
-
     const proxyURL = "https://corsproxy.io/?";
     const target = engines[currentEngine] + encodeURIComponent(query);
-    
+
     window.open(proxyURL + encodeURIComponent(target), "_blank");
 }
 
+window.addEventListener("load", () => {
+    const input = document.getElementById("searchInput");
+    const clock = document.getElementById("clock");
 
+    input.focus();
 
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark");
+        clock.style.color = "white";
+    }
 
-
-
+    setInterval(() => {
+        clock.textContent = new Date().toLocaleTimeString();
+    }, 1000);
+});
