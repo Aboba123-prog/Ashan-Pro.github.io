@@ -1,0 +1,327 @@
+:root {
+    --bg1: #ffffff;
+    --bg2: #e3f2fd;
+    --text: #000;
+    --accent: #007bff;
+}
+
+body.dark {
+    --bg1: #0f0f1a;
+    --bg2: #1a1a2e;
+    --text: #fff;
+    --accent: #00ffff;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+}
+
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    z-index: -1;
+    transition: 0.5s;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 15vh;
+}
+
+.top-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 600px;
+    gap: 8px;
+    text-align: center;
+}
+
+#clock {
+    font-size: 18px;
+    opacity: 0.8;
+    color: white;
+}
+
+.search-box {
+    margin-top: 30px;
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+}
+
+input {
+    flex: 1;
+    padding: 15px;
+    border-radius: 30px 0 0 30px;
+    border: 2px solid var(--accent);
+    outline: none;
+    font-size: 16px;
+}
+
+button {
+    padding: 15px 20px;
+    border-radius: 0 30px 30px 0;
+    border: none;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+body.dark button {
+    box-shadow: 0 0 15px var(--accent);
+}
+
+.choice {
+    margin-bottom: 0;
+}
+
+/* Engines */
+
+.engines {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.engine-card {
+    padding: 10px 20px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: 0.3s;
+    min-width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.engine-card:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-5px);
+}
+
+/* Controls */
+
+.controls {
+    margin-top: 30px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Tablet */
+
+@media (max-width: 768px) {
+    .container {
+        justify-content: flex-start;
+        padding-top: 15vh;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .search-box {
+        max-width: 400px;
+    }
+
+    input {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    button {
+        padding: 10px 15px;
+    }
+
+    .engines {
+        gap: 8px;
+        max-width: 90%;
+    }
+
+    .engine-card {
+        padding: 8px 12px;
+        transform: scale(0.9);
+    }
+
+    .engines button,
+    .controls button {
+        width: 60px !important;
+        height: 40px !important;
+        font-size: 12px;
+        padding: 0 !important;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    input {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    button {
+        padding: 12px 15px;
+    }
+}
+
+.engine-label {
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: var(--accent);
+    color: white;
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+body.dark .engine-label {
+    box-shadow: 0 0 10px var(--accent);
+}
+
+@media (max-width: 768px) {
+    .engine-label {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .engine-label {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+}
+
+.search-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.clock-top {
+    font-size: 16px;
+    opacity: 0.85;
+    transition: 0.3s;
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    .clock-top {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .clock-top {
+        font-size: 13px;
+    }
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ===========================
+   240x320 BUTTON PHONE MODE
+   =========================== */
+
+@media (max-width: 240px), (max-height: 320px) {
+
+    body {
+        overflow: hidden;
+        font-size: 12px;
+    }
+
+    h1 {
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    /* Убираем тяжёлые функции */
+    .controls button:nth-child(2), /* Обои */
+    .controls button:nth-child(3), /* Сброс */
+    button[onclick*="startVoiceSearch"], /* Голос */
+    button[onclick*="openWithProxy"] /* VPN */
+    {
+        display: none !important;
+    }
+
+    /* Убираем эмодзи через размер */
+    h1::first-letter {
+        font-size: 16px;
+    }
+
+    /* Упрощаем поиск */
+    .search-box {
+        flex-direction: row;
+        gap: 2px;
+    }
+
+    .search-box input {
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    .search-box button {
+        padding: 4px;
+        font-size: 12px;
+    }
+
+    /* Уменьшаем карточки движков */
+    .engine-card {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    .engine-card img {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    #clock {
+        font-size: 11px;
+    }
+
+}
