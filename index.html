@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ashan Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="img/ChatGPT Image 14 февр. 2026 г., 22_57_17.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <div class="background"></div>
+
+    <div class="container">
+
+        <div class="top-bar">
+            <h1 id="name">Ashan Pro 26</h1>
+        </div>
+
+        <div class="search-wrapper glass">
+            <div id="clock" class="clock-top"></div>
+
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Введите запрос..." autocomplete="off">
+                <button style="border-radius: 0;" onclick="search()">Поиск</button>
+                <button onclick="startVoiceSearch()">Голосовой Поиск</button>
+            </div>
+        </div>
+
+        <h4 class="choice">Выбор поисковика</h4>
+
+        <div id="currentEngineLabel" class="engine-label">Google</div>
+
+        <div class="engines glass">
+
+            <div class="engine-card" onclick="setEngine('google')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSifcM3HiwNTXF8iC4Ed8AnszWGngiFXkXBOA&s"
+                    style="width:25px;height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <div class="engine-card" onclick="setEngine('yandex')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd0HKG8t9u3Juzy-yNXmOCaRPRTufcdXjNRg&s"
+                    style="height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <div class="engine-card" onclick="setEngine('duckduckgo')">
+                <img src="https://play-lh.googleusercontent.com/NW2ASwJ4qtxfThhVIpm4641sR4o-yGv80yqaJnOnpC4lEmdxEcNTFcF6-TlZYtmdaA"
+                    style="width:25px;height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <div class="engine-card" onclick="setEngine('bing')">
+                <img src="https://brandlogos.net/wp-content/uploads/2021/02/bing_icon-logo_brandlogos.net_8ham2-512x757.png"
+                    style="height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <div class="engine-card" onclick="setEngine('yahoo')">
+                <img src="https://logos-world.net/wp-content/uploads/2020/10/Yahoo-Emblem.png"
+                    style="height:25px;border-radius:20px;" alt="">
+            </div>
+
+            <button style="width: 65px;" onclick="openWithProxy()">VPN</button>
+
+        </div>
+
+        <h4 class="section-title">Темы</h4>
+
+        <div class="controls glass">
+            <button onclick="toggleTheme()">Тема</button>
+            <button onclick="document.getElementById('bgUpload').click()">Обои</button>
+            <button onclick="resetBackground()">По умолчанию</button>
+            <input type="file" id="bgUpload" accept="image/*" hidden>
+        </div>
+
+    </div>
+
+    <script>
+        function removeAds() {
+            [
+                'iframe[src*="ads"]',
+                'iframe[src*="doubleclick"]',
+                'div[id*="ad"]',
+                'div[class*="ad"]',
+                'div[class*="banner"]',
+                '.ads',
+                '.advertisement'
+            ].forEach(selector =>
+                document.querySelectorAll(selector).forEach(el => el.remove())
+            );
+        }
+
+        window.addEventListener("load", removeAds);
+        setInterval(removeAds, 2000);
+    </script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
