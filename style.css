@@ -238,4 +238,5 @@ button:hover,
 button:hover,
 .engine-card:hover {
     backdrop-filter: blur(30px);
+  cursor: pointer;
 }
