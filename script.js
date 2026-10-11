@@ -5,62 +5,86 @@
         {
             id: "google",
             name: "Google",
+            logo: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/3840px-Google_%22G%22_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
             icon: "fa-brands fa-google",
             url: "https://www.google.com/search?q="
         },
         {
             id: "yandex",
             name: "Yandex",
-            icon: "fa-brands fa-yandex",
+            logo: "https://upload.wikimedia.org/wikipedia/commons/8/85/Yandex_Browser_logo.png?utm_source=ru.wikipedia.org&utm_campaign=index&utm_content=original",
+            icon: "fa-solid fa-magnifying-glass",
             url: "https://yandex.com/search/?text="
         },
         {
             id: "duckduckgo",
             name: "DuckDuckGo",
+            logo: "https://upload.wikimedia.org/wikipedia/en/9/90/The_DuckDuckGo_Duck.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
             icon: "fa-solid fa-user-secret",
             url: "https://duckduckgo.com/?q="
         },
         {
             id: "bing",
             name: "Bing",
-            icon: "fa-brands fa-bing",
+            logo: "https://commons.wikimedia.org/wiki/Special:FilePath/Bing_Fluent_Logo.svg",
+            icon: "fa-solid fa-magnifying-glass",
             url: "https://www.bing.com/search?q="
         },
         {
             id: "yahoo",
             name: "Yahoo",
+            logo: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/yahoo-square-icon.png",
             icon: "fa-brands fa-yahoo",
             url: "https://search.yahoo.com/search?p="
         },
         {
             id: "brave",
             name: "Brave Search",
+            logo: "https://commons.wikimedia.org/wiki/Special:FilePath/Brave_lion_icon.svg",
             icon: "fa-solid fa-shield-halved",
             url: "https://search.brave.com/search?q="
         },
         {
             id: "ecosia",
             name: "Ecosia",
+            logo: "https://cdn.aptoide.com/imgs/2/0/a/20a9c070515af29e991485fada983b55_icon.png",
             icon: "fa-solid fa-leaf",
             url: "https://www.ecosia.org/search?q="
         },
         {
             id: "startpage",
             name: "Startpage",
+            logo: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/startpage-dark.webp",
             icon: "fa-solid fa-user-shield",
             url: "https://www.startpage.com/sp/search?query="
         },
         {
             id: "qwant",
             name: "Qwant",
+            logo: "https://commons.wikimedia.org/wiki/Special:FilePath/Qwant-Icone-2022.svg",
             icon: "fa-solid fa-magnifying-glass",
             url: "https://www.qwant.com/?q="
         },
         {
             id: "mojeek",
             name: "Mojeek",
+            logo: "https://www.mojeek.com/logos/icon_cc.svg",
             icon: "fa-solid fa-globe",
             url: "https://www.mojeek.com/search?q="
+        },
+        {
+            id: "perplexity",
+            name: "Perplexity",
+            logo: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/perplexity-ai-icon.png",
+            icon: "fa-solid fa-magnifying-glass",
+            url: "https://www.perplexity.ai/search?q="
+        },
+        {
+            id: "you",
+            name: "You",
+            logo: "https://cdn.aptoide.com/imgs/f/4/7/f47b58066771b82493f5a47c1ec340c9_icon.png",
+            icon: "fa-solid fa-globe",
+            url: "https://you.com/search?q="
         }
     ];
 
@@ -166,8 +190,10 @@
     var animationsToggle = document.getElementById("animationsToggle");
 
     var enginesRendered = false;
-    var wallpaperPreviewsLoaded = false;
+    var wallpaperPreviewsScheduled = false;
     var closeTimer = null;
+    var wallpaperToken = 0;
+    var clockDate = "";
 
     function getEngine(id) {
         var i;
@@ -179,11 +205,51 @@
         return engines[0];
     }
 
+    function getEngineIndex(id) {
+        var i;
+
+        for (i = 0; i < engines.length; i++) {
+            if (engines[i].id === id) return i;
+        }
+
+        return 0;
+    }
+
     function iconFor(engine) {
         var icon = document.createElement("i");
         icon.className = engine.icon;
         icon.setAttribute("aria-hidden", "true");
         return icon;
+    }
+
+    function makeEngineLogo(engine) {
+        var holder = document.createElement("span");
+        holder.className = "engine-logo";
+
+        var fallback = iconFor(engine);
+        holder.appendChild(fallback);
+
+        if (!engine.logo) return holder;
+
+        var image = new Image();
+        image.alt = "";
+        image.width = 24;
+        image.height = 24;
+
+        image.onload = function () {
+            if (fallback.parentNode === holder) {
+                holder.replaceChild(image, fallback);
+            }
+        };
+
+        image.onerror = function () {
+            image.onload = null;
+            image.onerror = null;
+        };
+
+        image.src = engine.logo;
+
+        return holder;
     }
 
     function renderEngines() {
@@ -192,6 +258,7 @@
             return;
         }
 
+        var fragment = document.createDocumentFragment();
         var i;
 
         for (i = 0; i < engines.length; i++) {
@@ -203,19 +270,21 @@
                 button.title = engine.name;
                 button.setAttribute("aria-label", engine.name);
                 button.setAttribute("data-engine", engine.id);
-                button.appendChild(iconFor(engine));
+                button.appendChild(makeEngineLogo(engine));
 
                 button.onclick = function () {
                     setEngine(engine.id);
                 };
 
-                enginesBox.appendChild(button);
+                fragment.appendChild(button);
             })(engines[i]);
         }
 
+        enginesBox.appendChild(fragment);
         enginesRendered = true;
+
         updateEngineButtons();
-        setTimeout(moveEngineIndicator, 40);
+        moveEngineIndicator();
     }
 
     function updateEngineButtons() {
@@ -231,50 +300,41 @@
     }
 
     function moveEngineIndicator() {
-        if (!enginesRendered || !settingsOverlay.classList.contains("open")) return;
+        if (!enginesRendered || !settingsOverlay.classList.contains("open")) {
+            return;
+        }
 
-        var active = enginesBox.querySelector(
-            '[data-engine="' + currentEngine + '"]'
-        );
+        var columns = 4;
+        var gap = 7;
+        var padding = 9;
+        var cellHeight = 49;
+        var index = getEngineIndex(currentEngine);
 
-        if (!active) return;
+        var availableWidth = enginesBox.clientWidth - padding * 2;
+        var cellWidth = (availableWidth - gap * (columns - 1)) / columns;
 
-        var activeRect = active.getBoundingClientRect();
-        var parentRect = enginesBox.getBoundingClientRect();
+        var column = index % columns;
+        var row = Math.floor(index / columns);
 
-        var x = activeRect.left - parentRect.left - enginesBox.clientLeft;
-        var y = activeRect.top - parentRect.top - enginesBox.clientTop;
+        var x = column * (cellWidth + gap);
+        var y = row * (cellHeight + gap);
 
-        engineIndicator.style.width = activeRect.width + "px";
-        engineIndicator.style.height = activeRect.height + "px";
-        engineIndicator.style.transform = "translate(" + x + "px," + y + "px)";
+        engineIndicator.style.width = cellWidth + "px";
+        engineIndicator.style.height = cellHeight + "px";
+        engineIndicator.style.transform = "translate3d(" + x + "px," + y + "px,0)";
     }
 
     function moveLabelIndicator() {
         var wrapperWidth = labelWrapper.clientWidth;
-        var textWidth = currentEngineName.getBoundingClientRect().width;
-        var width = Math.min(wrapperWidth, Math.max(96, textWidth + 36));
-        var x = (wrapperWidth - width) / 2;
+        var textWidth = currentEngineName.offsetWidth;
 
-        labelIndicator.style.width = width + "px";
-        labelIndicator.style.transform = "translateX(" + x + "px)";
-    }
+        var targetWidth = Math.max(94, textWidth + 34);
+        targetWidth = Math.min(wrapperWidth - 12, targetWidth);
 
-    function moveThemeIndicator() {
-        var active = themeControls.querySelector(
-            '[data-theme="' + currentTheme + '"]'
-        );
+        var scale = targetWidth / 100;
 
-        if (!active) return;
-
-        var activeRect = active.getBoundingClientRect();
-        var parentRect = themeControls.getBoundingClientRect();
-
-        var x = activeRect.left - parentRect.left -
-            themeControls.clientLeft - themeIndicator.offsetLeft;
-
-        themeIndicator.style.width = activeRect.width + "px";
-        themeIndicator.style.transform = "translateX(" + x + "px)";
+        labelIndicator.style.transform =
+            "translate3d(-50%,0,0) scaleX(" + scale + ")";
     }
 
     function requestFrame(callback) {
@@ -306,8 +366,10 @@
             return;
         }
 
-        var engine = getEngine(currentEngine);
-        window.open(engine.url + encodeURIComponent(query), "_blank");
+        window.open(
+            getEngine(currentEngine).url + encodeURIComponent(query),
+            "_blank"
+        );
     }
 
     function startVoiceSearch() {
@@ -353,11 +415,39 @@
             second: "2-digit"
         });
 
-        dateLabel.textContent = now.toLocaleDateString("ru-RU", {
-            weekday: "short",
-            day: "numeric",
-            month: "short"
-        });
+        var today = now.getFullYear() + "-" +
+            now.getMonth() + "-" +
+            now.getDate();
+
+        if (today !== clockDate) {
+            clockDate = today;
+            dateLabel.textContent = now.toLocaleDateString("ru-RU", {
+                weekday: "short",
+                day: "numeric",
+                month: "short"
+            });
+        }
+    }
+
+    function moveThemeIndicator() {
+        var themes = ["light", "dark", "system"];
+        var index = themes.indexOf(currentTheme);
+
+        if (index < 0) index = 2;
+
+        var gap = 6;
+        var padding = 7;
+        var columns = 3;
+        var cellWidth = (
+            themeControls.clientWidth -
+            padding * 2 -
+            gap * (columns - 1)
+        ) / columns;
+
+        var x = index * (cellWidth + gap);
+
+        themeIndicator.style.width = cellWidth + "px";
+        themeIndicator.style.transform = "translate3d(" + x + "px,0,0)";
     }
 
     function applyTheme() {
@@ -375,7 +465,9 @@
 
         var meta = document.querySelector('meta[name="theme-color"]');
 
-        if (meta) meta.setAttribute("content", dark ? "#0d1120" : "#e3f0ff");
+        if (meta) {
+            meta.setAttribute("content", dark ? "#0d1120" : "#e3f0ff");
+        }
 
         var buttons = document.querySelectorAll("[data-theme]");
         var i;
@@ -392,10 +484,10 @@
 
     function applyGlass() {
         var off = glassLevel === 0;
-        var blur = off ? 0 : 3 + Math.round(glassLevel * 0.18);
+        var blur = off ? 0 : 2 + Math.round(glassLevel * 0.13);
         var alpha = off ? .97 : .10 + glassLevel * .0021;
-        var reflection = off ? 0 : Math.min(.65, glassLevel / 160);
-        var shadow = off ? 0 : Math.min(.12, .025 + glassLevel * .0009);
+        var reflection = off ? 0 : Math.min(.62, glassLevel / 165);
+        var shadow = off ? 0 : Math.min(.11, .02 + glassLevel * .0009);
 
         document.body.classList.toggle("glass-off", off);
 
@@ -408,16 +500,13 @@
         glassNumber.value = glassLevel;
     }
 
-    function normalizeGlass(value) {
+    function updateGlass(value) {
         var number = parseInt(value, 10);
 
-        if (isNaN(number)) number = glassLevel;
+        if (isNaN(number)) return;
 
-        return Math.max(0, Math.min(100, number));
-    }
+        glassLevel = Math.max(0, Math.min(100, number));
 
-    function updateGlass(value) {
-        glassLevel = normalizeGlass(value);
         storageSet("glassLevel", String(glassLevel));
         applyGlass();
     }
@@ -427,30 +516,42 @@
 
         if (!item) return "";
 
-        var width = thumbnail ? 360 : 1440;
-        var quality = thumbnail ? 45 : 65;
+        var ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+        var width = thumbnail
+            ? 320
+            : Math.max(480, Math.min(1440, Math.round(window.innerWidth * ratio)));
+        var quality = thumbnail ? 40 : 58;
 
         return item.photo + "?auto=format&fit=crop&w=" + width + "&q=" + quality;
     }
 
     function loadWallpaperPreviews() {
-        if (wallpaperPreviewsLoaded) return;
+        if (wallpaperPreviewsScheduled) return;
+
+        wallpaperPreviewsScheduled = true;
 
         var buttons = document.querySelectorAll("[data-wallpaper]");
-        var i;
+        var index = 0;
 
-        for (i = 0; i < buttons.length; i++) {
-            var id = buttons[i].getAttribute("data-wallpaper");
+        function loadNext() {
+            if (index >= buttons.length) return;
+
+            var button = buttons[index++];
+            var id = button.getAttribute("data-wallpaper");
             var url = wallpaperURL(id, true);
 
             if (url) {
-                buttons[i].style.backgroundImage =
+                button.style.backgroundImage =
                     "linear-gradient(0deg,rgba(5,12,25,.48),transparent 75%),url('" +
                     url + "')";
             }
+
+            if (index < buttons.length) {
+                setTimeout(loadNext, 100);
+            }
         }
 
-        wallpaperPreviewsLoaded = true;
+        setTimeout(loadNext, animationsEnabled ? 250 : 0);
     }
 
     function updateWallpaperButtons() {
@@ -471,26 +572,46 @@
             background.style.backgroundPosition = "center";
             background.style.backgroundSize = "cover";
             background.style.backgroundRepeat = "no-repeat";
+
             updateWallpaperButtons();
             return;
         }
 
         var item = wallpapers[currentWallpaper];
+        var token = ++wallpaperToken;
 
-        if (item) {
-            background.style.backgroundImage =
-                "linear-gradient(135deg,rgba(6,14,28,.08),rgba(6,14,28,.12)),url('" +
-                wallpaperURL(currentWallpaper, false) + "')";
-
-            background.style.backgroundPosition = item.position;
-            background.style.backgroundSize = "cover";
-            background.style.backgroundRepeat = "no-repeat";
-        } else {
+        if (!item) {
             background.style.backgroundImage = "";
             background.style.backgroundPosition = "center";
             background.style.backgroundSize = "cover";
             background.style.backgroundRepeat = "no-repeat";
+            updateWallpaperButtons();
+            return;
         }
+
+        var url = wallpaperURL(currentWallpaper, false);
+        var image = new Image();
+
+        image.onload = function () {
+            if (token !== wallpaperToken) return;
+
+            background.style.backgroundImage =
+                "linear-gradient(135deg,rgba(6,14,28,.08),rgba(6,14,28,.12)),url('" +
+                url + "')";
+
+            background.style.backgroundPosition = item.position;
+            background.style.backgroundSize = "cover";
+            background.style.backgroundRepeat = "no-repeat";
+        };
+
+        image.onerror = function () {
+            if (token !== wallpaperToken) return;
+
+            background.style.backgroundImage =
+                "linear-gradient(135deg,var(--bg1),var(--bg2))";
+        };
+
+        image.src = url;
 
         updateWallpaperButtons();
     }
@@ -509,8 +630,8 @@
         }
 
         settingsOverlay.classList.remove("closing");
+
         renderEngines();
-        loadWallpaperPreviews();
 
         settingsOverlay.classList.add("open");
         settingsOverlay.setAttribute("aria-hidden", "false");
@@ -520,6 +641,8 @@
             moveEngineIndicator();
             moveThemeIndicator();
         });
+
+        loadWallpaperPreviews();
     }
 
     function closeSettings() {
@@ -541,7 +664,7 @@
         closeTimer = setTimeout(function () {
             settingsOverlay.classList.remove("closing");
             closeTimer = null;
-        }, 300);
+        }, 240);
     }
 
     document.getElementById("searchButton").onclick = search;
@@ -707,7 +830,7 @@
     applyWallpaper();
     updateClock();
 
-    setTimeout(moveLabelIndicator, 50);
+    requestFrame(moveLabelIndicator);
 
     setInterval(updateClock, 1000);
 })();
