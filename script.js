@@ -1,3 +1,4 @@
+
 (function () {
     "use strict";
 
@@ -5,21 +6,21 @@
         {
             id: "google",
             name: "Google",
-            logo: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/3840px-Google_%22G%22_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+            logo: "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/250px-Google_Favicon_2025.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
             icon: "fa-brands fa-google",
             url: "https://www.google.com/search?q="
         },
         {
             id: "yandex",
             name: "Yandex",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/8/85/Yandex_Browser_logo.png?utm_source=ru.wikipedia.org&utm_campaign=index&utm_content=original",
+            logo: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/80/Yandex_Browser_logo.svg/1280px-Yandex_Browser_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
             icon: "fa-solid fa-magnifying-glass",
             url: "https://yandex.com/search/?text="
         },
         {
             id: "duckduckgo",
             name: "DuckDuckGo",
-            logo: "https://upload.wikimedia.org/wikipedia/en/9/90/The_DuckDuckGo_Duck.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
+            logo: "https://upload.wikimedia.org/wikipedia/en/9/90/The_DuckDuckGo_Duck.png",
             icon: "fa-solid fa-user-secret",
             url: "https://duckduckgo.com/?q="
         },
@@ -33,7 +34,7 @@
         {
             id: "yahoo",
             name: "Yahoo",
-            logo: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/yahoo-square-icon.png",
+            logo: "https://images.seeklogo.com/logo-png/50/2/yahoo-logo-png_seeklogo-503090.png",
             icon: "fa-brands fa-yahoo",
             url: "https://search.yahoo.com/search?p="
         },
@@ -73,18 +74,18 @@
             url: "https://www.mojeek.com/search?q="
         },
         {
-            id: "perplexity",
-            name: "Perplexity",
-            logo: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/perplexity-ai-icon.png",
-            icon: "fa-solid fa-magnifying-glass",
-            url: "https://www.perplexity.ai/search?q="
-        },
-        {
-            id: "you",
-            name: "You",
-            logo: "https://cdn.aptoide.com/imgs/f/4/7/f47b58066771b82493f5a47c1ec340c9_icon.png",
+            id: "youai",
+            name: "You.com AI",
+            logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXEHQe83AW4vRjhemSiXOdbx6O0rOECVAboo7p_OIUhd_y7fE2ZlDAgoFD&s=10",
             icon: "fa-solid fa-globe",
             url: "https://you.com/search?q="
+        },
+        {
+            id: "perplexity",
+            name: "Perplexity AI",
+            logo: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/perplexity-ai-icon.png",
+            icon: "fa-solid fa-circle-nodes",
+            url: "https://www.perplexity.ai/search?q="
         }
     ];
 
@@ -154,13 +155,18 @@
         }
     }
 
+    function requestFrame(callback) {
+        if (window.requestAnimationFrame) {
+            window.requestAnimationFrame(callback);
+        } else {
+            setTimeout(callback, 16);
+        }
+    }
+
     var currentEngine = storageGet("engine", "google");
     var currentTheme = storageGet("theme", "system");
     var customWallpaper = storageGet("customBackground", "");
-    var currentWallpaper = storageGet(
-        "wallpaper",
-        customWallpaper ? "custom" : "default"
-    );
+    var currentWallpaper = storageGet("wallpaper", customWallpaper ? "custom" : "default");
     var glassLevel = parseInt(storageGet("glassLevel", "70"), 10);
     var animationsEnabled = storageGet("animationsEnabled", "true") !== "false";
 
@@ -171,6 +177,8 @@
     var input = document.getElementById("searchInput");
     var clock = document.getElementById("clock");
     var dateLabel = document.getElementById("date");
+    var greeting = document.getElementById("greeting");
+    var welcome = document.getElementById("welcome");
     var background = document.getElementById("background");
 
     var settingsOverlay = document.getElementById("settingsOverlay");
@@ -189,11 +197,20 @@
     var glassNumber = document.getElementById("glassNumber");
     var animationsToggle = document.getElementById("animationsToggle");
 
+    if (!input || !clock || !dateLabel || !greeting || !welcome || !background ||
+        !settingsOverlay || !settingsOpen || !enginesBox || !engineIndicator ||
+        !labelWrapper || !labelIndicator || !currentEngineName ||
+        !themeControls || !themeIndicator || !glassRange || !glassNumber ||
+        !animationsToggle) {
+        return;
+    }
+
     var enginesRendered = false;
-    var wallpaperPreviewsScheduled = false;
+    var wallpaperPreviewsLoaded = false;
     var closeTimer = null;
     var wallpaperToken = 0;
-    var clockDate = "";
+    var lastGreeting = "";
+    var resizeQueued = false;
 
     function getEngine(id) {
         var i;
@@ -215,7 +232,58 @@
         return 0;
     }
 
-    function iconFor(engine) {
+    function greetingForHour(hour) {
+        if (hour >= 5 && hour < 12) return "Доброе утро";
+        if (hour >= 12 && hour < 17) return "Добрый день";
+        return "Добрый вечер";
+    }
+
+    function createGreeting(text) {
+        while (greeting.firstChild) {
+            greeting.removeChild(greeting.firstChild);
+        }
+
+        greeting.setAttribute("aria-label", text);
+
+        var characters = text.split("");
+        var fragment = document.createDocumentFragment();
+        var i;
+
+        for (i = 0; i < characters.length; i++) {
+            var span = document.createElement("span");
+
+            span.className = "greeting-char";
+            span.setAttribute("aria-hidden", "true");
+            span.textContent = characters[i] === " " ? "\u00a0" : characters[i];
+            span.style.animationDelay = (i * 30) + "ms";
+
+            fragment.appendChild(span);
+        }
+
+        greeting.appendChild(fragment);
+    }
+
+    function updateGreeting() {
+        var nextGreeting = greetingForHour(new Date().getHours());
+
+        if (nextGreeting === lastGreeting) return;
+
+        lastGreeting = nextGreeting;
+        welcome.classList.remove("is-visible");
+
+        createGreeting(nextGreeting);
+
+        if (!animationsEnabled) {
+            welcome.classList.add("is-visible");
+            return;
+        }
+
+        requestFrame(function () {
+            welcome.classList.add("is-visible");
+        });
+    }
+
+    function makeIcon(engine) {
         var icon = document.createElement("i");
         icon.className = engine.icon;
         icon.setAttribute("aria-hidden", "true");
@@ -226,15 +294,17 @@
         var holder = document.createElement("span");
         holder.className = "engine-logo";
 
-        var fallback = iconFor(engine);
+        var fallback = makeIcon(engine);
         holder.appendChild(fallback);
 
         if (!engine.logo) return holder;
 
         var image = new Image();
+
         image.alt = "";
         image.width = 24;
         image.height = 24;
+        image.decoding = "async";
 
         image.onload = function () {
             if (fallback.parentNode === holder) {
@@ -300,49 +370,41 @@
     }
 
     function moveEngineIndicator() {
-        if (!enginesRendered || !settingsOverlay.classList.contains("open")) {
-            return;
-        }
+        if (!enginesRendered || !settingsOverlay.classList.contains("open")) return;
 
         var columns = 4;
         var gap = 7;
         var padding = 9;
         var cellHeight = 49;
         var index = getEngineIndex(currentEngine);
-
         var availableWidth = enginesBox.clientWidth - padding * 2;
-        var cellWidth = (availableWidth - gap * (columns - 1)) / columns;
 
+        if (availableWidth <= 0) return;
+
+        var cellWidth = (availableWidth - gap * (columns - 1)) / columns;
         var column = index % columns;
         var row = Math.floor(index / columns);
-
         var x = column * (cellWidth + gap);
         var y = row * (cellHeight + gap);
 
         engineIndicator.style.width = cellWidth + "px";
-        engineIndicator.style.height = cellHeight + "px";
         engineIndicator.style.transform = "translate3d(" + x + "px," + y + "px,0)";
     }
 
     function moveLabelIndicator() {
         var wrapperWidth = labelWrapper.clientWidth;
+
+        if (wrapperWidth <= 0) return;
+
         var textWidth = currentEngineName.offsetWidth;
+        var desiredWidth = Math.max(94, textWidth + 34);
 
-        var targetWidth = Math.max(94, textWidth + 34);
-        targetWidth = Math.min(wrapperWidth - 12, targetWidth);
+        desiredWidth = Math.min(wrapperWidth - 12, desiredWidth);
 
-        var scale = targetWidth / 100;
-
-        labelIndicator.style.transform =
-            "translate3d(-50%,0,0) scaleX(" + scale + ")";
-    }
-
-    function requestFrame(callback) {
-        if (window.requestAnimationFrame) {
-            window.requestAnimationFrame(callback);
-        } else {
-            setTimeout(callback, 16);
-        }
+        labelIndicator.style.setProperty(
+            "--label-scale",
+            String(Math.max(0, desiredWidth / 100))
+        );
     }
 
     function setEngine(id) {
@@ -366,10 +428,8 @@
             return;
         }
 
-        window.open(
-            getEngine(currentEngine).url + encodeURIComponent(query),
-            "_blank"
-        );
+        var engine = getEngine(currentEngine);
+        window.open(engine.url + encodeURIComponent(query), "_blank", "noopener,noreferrer");
     }
 
     function startVoiceSearch() {
@@ -403,7 +463,11 @@
             input.placeholder = "Введите запрос...";
         };
 
-        recognition.start();
+        try {
+            recognition.start();
+        } catch (error) {
+            input.placeholder = "Введите запрос...";
+        }
     }
 
     function updateClock() {
@@ -415,18 +479,13 @@
             second: "2-digit"
         });
 
-        var today = now.getFullYear() + "-" +
-            now.getMonth() + "-" +
-            now.getDate();
+        dateLabel.textContent = now.toLocaleDateString("ru-RU", {
+            weekday: "short",
+            day: "numeric",
+            month: "short"
+        });
 
-        if (today !== clockDate) {
-            clockDate = today;
-            dateLabel.textContent = now.toLocaleDateString("ru-RU", {
-                weekday: "short",
-                day: "numeric",
-                month: "short"
-            });
-        }
+        updateGreeting();
     }
 
     function moveThemeIndicator() {
@@ -437,13 +496,11 @@
 
         var gap = 6;
         var padding = 7;
-        var columns = 3;
-        var cellWidth = (
-            themeControls.clientWidth -
-            padding * 2 -
-            gap * (columns - 1)
-        ) / columns;
+        var availableWidth = themeControls.clientWidth - padding * 2;
 
+        if (availableWidth <= 0) return;
+
+        var cellWidth = (availableWidth - gap * 2) / 3;
         var x = index * (cellWidth + gap);
 
         themeIndicator.style.width = cellWidth + "px";
@@ -485,9 +542,9 @@
     function applyGlass() {
         var off = glassLevel === 0;
         var blur = off ? 0 : 2 + Math.round(glassLevel * 0.13);
-        var alpha = off ? .97 : .10 + glassLevel * .0021;
-        var reflection = off ? 0 : Math.min(.62, glassLevel / 165);
-        var shadow = off ? 0 : Math.min(.11, .02 + glassLevel * .0009);
+        var alpha = off ? 0.97 : 0.10 + glassLevel * 0.0021;
+        var reflection = off ? 0 : Math.min(0.62, glassLevel / 165);
+        var shadow = off ? 0 : Math.min(0.11, 0.02 + glassLevel * 0.0009);
 
         document.body.classList.toggle("glass-off", off);
 
@@ -501,11 +558,13 @@
     }
 
     function updateGlass(value) {
-        var number = parseInt(value, 10);
+        if (value === "") return;
 
-        if (isNaN(number)) return;
+        var number = Number(value);
 
-        glassLevel = Math.max(0, Math.min(100, number));
+        if (!Number.isFinite(number)) return;
+
+        glassLevel = Math.max(0, Math.min(100, Math.round(number)));
 
         storageSet("glassLevel", String(glassLevel));
         applyGlass();
@@ -526,9 +585,9 @@
     }
 
     function loadWallpaperPreviews() {
-        if (wallpaperPreviewsScheduled) return;
+        if (wallpaperPreviewsLoaded) return;
 
-        wallpaperPreviewsScheduled = true;
+        wallpaperPreviewsLoaded = true;
 
         var buttons = document.querySelectorAll("[data-wallpaper]");
         var index = 0;
@@ -542,8 +601,7 @@
 
             if (url) {
                 button.style.backgroundImage =
-                    "linear-gradient(0deg,rgba(5,12,25,.48),transparent 75%),url('" +
-                    url + "')";
+                    "linear-gradient(0deg,rgba(5,12,25,.48),transparent 75%),url('" + url + "')";
             }
 
             if (index < buttons.length) {
@@ -572,7 +630,6 @@
             background.style.backgroundPosition = "center";
             background.style.backgroundSize = "cover";
             background.style.backgroundRepeat = "no-repeat";
-
             updateWallpaperButtons();
             return;
         }
@@ -596,9 +653,7 @@
             if (token !== wallpaperToken) return;
 
             background.style.backgroundImage =
-                "linear-gradient(135deg,rgba(6,14,28,.08),rgba(6,14,28,.12)),url('" +
-                url + "')";
-
+                "linear-gradient(135deg,rgba(6,14,28,.08),rgba(6,14,28,.12)),url('" + url + "')";
             background.style.backgroundPosition = item.position;
             background.style.backgroundSize = "cover";
             background.style.backgroundRepeat = "no-repeat";
@@ -612,7 +667,6 @@
         };
 
         image.src = url;
-
         updateWallpaperButtons();
     }
 
@@ -621,6 +675,12 @@
         animationsToggle.checked = animationsEnabled;
 
         storageSet("animationsEnabled", animationsEnabled ? "true" : "false");
+
+        if (!animationsEnabled) {
+            welcome.classList.add("is-visible");
+        } else {
+            updateGreeting();
+        }
     }
 
     function openSettings() {
@@ -630,7 +690,6 @@
         }
 
         settingsOverlay.classList.remove("closing");
-
         renderEngines();
 
         settingsOverlay.classList.add("open");
@@ -640,6 +699,7 @@
         requestFrame(function () {
             moveEngineIndicator();
             moveThemeIndicator();
+            moveLabelIndicator();
         });
 
         loadWallpaperPreviews();
@@ -667,10 +727,16 @@
         }, 240);
     }
 
-    document.getElementById("searchButton").onclick = search;
-    document.getElementById("voiceButton").onclick = startVoiceSearch;
+    var searchButton = document.getElementById("searchButton");
+    var voiceButton = document.getElementById("voiceButton");
+    var settingsClose = document.getElementById("settingsClose");
+
+    if (searchButton) searchButton.onclick = search;
+    if (voiceButton) voiceButton.onclick = startVoiceSearch;
+
     settingsOpen.onclick = openSettings;
-    document.getElementById("settingsClose").onclick = closeSettings;
+
+    if (settingsClose) settingsClose.onclick = closeSettings;
 
     settingsOverlay.onclick = function (event) {
         if (event.target === settingsOverlay) closeSettings();
@@ -725,46 +791,76 @@
         };
     }
 
-    document.getElementById("uploadWallpaper").onclick = function () {
-        document.getElementById("wallpaperInput").click();
-    };
+    var uploadWallpaper = document.getElementById("uploadWallpaper");
+    var wallpaperInput = document.getElementById("wallpaperInput");
 
-    document.getElementById("wallpaperInput").onchange = function () {
-        var file = this.files && this.files[0];
-
-        if (!file) return;
-
-        if (file.size > 8 * 1024 * 1024) {
-            window.alert("Выберите изображение размером до 8 МБ.");
-            this.value = "";
-            return;
-        }
-
-        var reader = new FileReader();
-
-        reader.onload = function (event) {
-            customWallpaper = event.target.result;
-            currentWallpaper = "custom";
-
-            storageSet("customBackground", customWallpaper);
-            storageSet("wallpaper", "custom");
-
-            applyWallpaper();
+    if (uploadWallpaper && wallpaperInput) {
+        uploadWallpaper.onclick = function () {
+            wallpaperInput.click();
         };
 
-        reader.readAsDataURL(file);
-    };
+        wallpaperInput.onchange = function () {
+            var file = this.files && this.files[0];
 
-    document.getElementById("resetDefaults").onclick = function () {
-        currentWallpaper = "default";
-        customWallpaper = "";
+            if (!file) return;
 
-        storageSet("wallpaper", "default");
-        storageRemove("customBackground");
+            if (!file.type || file.type.indexOf("image/") !== 0) {
+                window.alert("Выберите файл изображения.");
+                this.value = "";
+                return;
+            }
 
-        setEngine("google");
-        applyWallpaper();
-    };
+            if (file.size > 8 * 1024 * 1024) {
+                window.alert("Выберите изображение размером до 8 МБ.");
+                this.value = "";
+                return;
+            }
+
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                if (typeof event.target.result !== "string") return;
+
+                customWallpaper = event.target.result;
+                currentWallpaper = "custom";
+
+                storageSet("customBackground", customWallpaper);
+                storageSet("wallpaper", "custom");
+
+                applyWallpaper();
+            };
+
+            reader.onerror = function () {
+                window.alert("Не удалось загрузить изображение.");
+            };
+
+            reader.readAsDataURL(file);
+        };
+    }
+
+    var resetDefaults = document.getElementById("resetDefaults");
+
+    if (resetDefaults) {
+        resetDefaults.onclick = function () {
+            currentWallpaper = "default";
+            customWallpaper = "";
+            currentTheme = "system";
+            glassLevel = 70;
+            animationsEnabled = true;
+
+            storageSet("wallpaper", "default");
+            storageRemove("customBackground");
+            storageSet("theme", "system");
+            storageSet("glassLevel", "70");
+            storageSet("animationsEnabled", "true");
+
+            setEngine("google");
+            applyTheme();
+            applyGlass();
+            applyAnimations();
+            applyWallpaper();
+        };
+    }
 
     document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") closeSettings();
@@ -778,24 +874,26 @@
         }
     });
 
-    window.addEventListener("resize", function () {
-        moveLabelIndicator();
+    function updateLayout() {
+        if (resizeQueued) return;
 
-        if (settingsOverlay.classList.contains("open")) {
-            moveEngineIndicator();
-            moveThemeIndicator();
-        }
-    });
+        resizeQueued = true;
 
-    window.addEventListener("orientationchange", function () {
-        setTimeout(function () {
+        requestFrame(function () {
+            resizeQueued = false;
             moveLabelIndicator();
 
             if (settingsOverlay.classList.contains("open")) {
                 moveEngineIndicator();
                 moveThemeIndicator();
             }
-        }, 150);
+        });
+    }
+
+    window.addEventListener("resize", updateLayout);
+
+    window.addEventListener("orientationchange", function () {
+        setTimeout(updateLayout, 150);
     });
 
     if (window.matchMedia) {
@@ -818,11 +916,22 @@
         currentWallpaper = "default";
     }
 
-    if (isNaN(glassLevel) || glassLevel < 0 || glassLevel > 100) {
+    if (currentWallpaper === "custom" && !customWallpaper) {
+        currentWallpaper = "default";
+    }
+
+    if (!Number.isFinite(glassLevel) || glassLevel < 0 || glassLevel > 100) {
         glassLevel = 70;
     }
 
+    if (["light", "dark", "system"].indexOf(currentTheme) === -1) {
+        currentTheme = "system";
+    }
+
     currentEngineName.textContent = getEngine(currentEngine).name;
+
+    createGreeting(greetingForHour(new Date().getHours()));
+    lastGreeting = greetingForHour(new Date().getHours());
 
     applyAnimations();
     applyTheme();
@@ -830,7 +939,10 @@
     applyWallpaper();
     updateClock();
 
-    requestFrame(moveLabelIndicator);
+    requestFrame(function () {
+        welcome.classList.add("is-visible");
+        moveLabelIndicator();
+    });
 
     setInterval(updateClock, 1000);
 })();
