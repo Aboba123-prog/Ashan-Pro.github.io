@@ -1,193 +1,194 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#e3f0ff">
+    <meta name="theme-color" content="#eef3fb">
+    <meta name="description" content="Ashan Pro — удобный и красивый поиск в интернете.">
     <title>Ashan Pro</title>
-    <link rel="icon" href="ashan-logo.png" type="image/png">
+    <link rel="icon" href="ashan-logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 
 <body>
-
-    <div class="background" id="background"></div>
+    <div class="background" id="background" aria-hidden="true"></div>
+    <div class="background-shade" aria-hidden="true"></div>
 
     <header class="top-bar">
-        <h1>Ashan Pro 27</h1>
-        <button class="settings-open glass" id="settingsOpen" type="button" aria-label="Настройки">
-            <i class="fa-solid fa-gear"></i>
+        <a class="brand" href="index.html" aria-label="Ashan Pro">
+            <span class="brand-name">Ashan Pro 27.1</span>
+        </a>
+
+        <button class="settings-toggle" id="settingsOpen" type="button" aria-label="Настройки" aria-expanded="false">
+            <i class="fa-solid fa-gear" aria-hidden="true"></i>
         </button>
     </header>
 
-    <main class="container">
-        <div class="welcome" id="welcome">
-            <p class="greeting-text" id="greeting" aria-live="polite">Доброе утро</p>
-            <span class="welcome-line"></span>
-        </div>
-
-        <section class="search-wrapper glass">
-            <div class="datetime">
-                <span id="clock">00:00:00</span>
-                <span id="date"></span>
-            </div>
-
-            <div class="search-box">
-                <input id="searchInput" type="text" placeholder="Введите запрос..." autocomplete="off"
-                    autocapitalize="off" enterkeyhint="search" spellcheck="false">
-
-                <button id="searchButton" type="button" aria-label="Поиск" title="Поиск">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-
-                <button id="voiceButton" type="button" aria-label="Голосовой поиск" title="Голосовой поиск">
-                    <i class="fa-solid fa-microphone"></i>
-                </button>
+    <main class="main">
+        <section class="welcome">
+            <p id="greeting">Добрый день</p>
+            <div class="welcome-line">
+                <time id="clock">00:00</time>
+                <span class="datetime-dot" aria-hidden="true"></span>
+                <time id="date"></time>
             </div>
         </section>
 
-        <h4>Текущий поисковик</h4>
+        <form class="search-wrapper glass" id="searchForm" role="search">
+            <input type="search" id="searchInput" name="q" placeholder="Что будем искать?" aria-label="Поисковый запрос"
+                autocomplete="off" spellcheck="false" enterkeyhint="search" required>
 
-        <div class="label-wrapper" id="labelWrapper">
-            <div class="label-indicator" id="labelIndicator"></div>
-            <div class="engine-label">
-                <span id="currentEngineName">Google</span>
+            <button class="search-action glass-control" type="submit" aria-label="Искать">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            </button>
+
+            <button class="voice-action glass-control" id="voiceButton" type="button" aria-label="Голосовой поиск">
+                <i class="fa-solid fa-microphone" aria-hidden="true"></i>
+            </button>
+        </form>
+
+        <section class="current-engine" aria-label="Выбранная поисковая система">
+            <span class="current-engine-caption">Поиск с помощью</span>
+
+            <div class="current-engine-pill glass" id="currentEngine">
+                <span class="current-engine-logo" id="currentEngineLogo" aria-hidden="true"></span>
+                <span class="current-engine-name" id="currentEngineName">Google</span>
+                <span class="engine-chevron" aria-hidden="true">
+                </span>
             </div>
-        </div>
+        </section>
     </main>
 
     <div class="settings-overlay" id="settingsOverlay" aria-hidden="true">
-        <aside class="settings-window glass" id="settingsWindow" aria-label="Настройки">
-
+        <aside class="settings-window glass" id="settingsWindow" role="dialog" aria-modal="true"
+            aria-labelledby="settingsTitle" tabindex="-1">
             <div class="settings-header">
                 <div>
-                    <span class="settings-subtitle">ASHAN PRO 27</span>
-                    <h2>Настройки</h2>
+                    <p class="eyebrow">ASHAN PRO 27.1</p>
+                    <h1 id="settingsTitle">Настройки</h1>
                 </div>
 
-                <button class="settings-close glass" id="settingsClose" type="button" aria-label="Закрыть">
-                    <i class="fa-solid fa-xmark"></i>
+                <button class="close-settings" id="settingsClose" type="button" aria-label="Закрыть настройки">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                 </button>
             </div>
 
             <section class="settings-section">
-                <h3>Поисковик</h3>
-                <div class="engines glass" id="engines">
-                    <div class="engine-indicator" id="engineIndicator"></div>
+                <div class="section-heading">
+                    <h2>Поисковые системы</h2>
+                    <span class="section-note">16 вариантов</span>
+                </div>
+
+                <div class="engines" id="engines">
+                    <div class="engine-indicator" id="engineIndicator" aria-hidden="true"></div>
                 </div>
             </section>
 
             <section class="settings-section">
-                <h3>Тема</h3>
+                <div class="section-heading">
+                    <h2>Внешний вид</h2>
+                </div>
 
-                <div class="theme-controls glass" id="themeControls">
-                    <div class="theme-indicator" id="themeIndicator"></div>
+                <div class="theme-controls" id="themeControls" aria-label="Тема оформления">
+                    <div class="theme-indicator" id="themeIndicator" aria-hidden="true"></div>
 
-                    <button type="button" data-theme="light" aria-label="Светлая тема">
-                        <i class="fa-solid fa-sun"></i>
+                    <button class="theme-button" type="button" data-theme="light" aria-pressed="false">
+                        <i class="fa-regular fa-sun" aria-hidden="true"></i>
+                        <span>Светлая</span>
                     </button>
 
-                    <button type="button" data-theme="dark" aria-label="Тёмная тема">
-                        <i class="fa-solid fa-moon"></i>
+                    <button class="theme-button" type="button" data-theme="dark" aria-pressed="false">
+                        <i class="fa-regular fa-moon" aria-hidden="true"></i>
+                        <span>Тёмная</span>
                     </button>
 
-                    <button type="button" data-theme="system" aria-label="Системная тема">
-                        <i class="fa-solid fa-circle-half-stroke"></i>
+                    <button class="theme-button" type="button" data-theme="system" aria-pressed="true">
+                        <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+                        <span>Авто</span>
                     </button>
                 </div>
             </section>
 
             <section class="settings-section">
                 <div class="section-heading">
-                    <h3>Liquid Glass</h3>
-
-                    <label class="glass-number-wrap">
-                        <input type="number" id="glassNumber" min="0" max="100" step="1" value="70" inputmode="numeric"
-                            aria-label="Интенсивность Liquid Glass">
-                        <span>%</span>
-                    </label>
+                    <h2>Liquid Glass</h2>
+                    <span class="value-pill"><span id="glassNumber">72</span>%</span>
                 </div>
 
-                <div class="glass-control glass">
-                    <input type="range" id="glassRange" min="0" max="100" value="70">
-                    <div class="glass-range-labels">
-                        <span>Выкл.</span>
-                        <span>Максимум</span>
-                    </div>
+                <input type="range" id="glassRange" min="0" max="100" value="72" aria-label="Уровень Liquid Glass">
+
+                <div class="range-labels">
+                    <span>Прозрачно</span>
+                    <span>Стекло</span>
+                    <span>100%</span>
                 </div>
+
+                <p class="setting-description">Настрой прозрачность и размытие. На 0% стеклянный эффект отключается.</p>
+            </section>
+
+            <section class="settings-section animation-setting">
+                <div>
+                    <h2>Плавные анимации</h2>
+                    <p class="setting-description">Мягкие движения интерфейса.</p>
+                </div>
+
+                <label class="switch" for="animationsToggle">
+                    <input type="checkbox" id="animationsToggle" checked>
+                    <span class="switch-track" aria-hidden="true"></span>
+                </label>
             </section>
 
             <section class="settings-section">
-                <div class="motion-control glass">
-                    <div class="motion-description">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <div>
-                            <strong>Анимации интерфейса</strong>
-                            <span>Пилюли и переходы</span>
-                        </div>
-                    </div>
-
-                    <label class="switch">
-                        <input type="checkbox" id="animationsToggle" checked>
-                        <span class="switch-track"></span>
-                    </label>
+                <div class="section-heading">
+                    <h2>Обои</h2>
                 </div>
-            </section>
 
-            <section class="settings-section">
-                <h3>Системные обои</h3>
-
-                <div class="wallpaper-grid">
-                    <button class="wallpaper wallpaper-lake" data-wallpaper="lake" type="button"
+                <div class="wallpapers" id="wallpapers">
+                    <button class="wallpaper-card" type="button" data-wallpaper="lake"
                         aria-label="Озеро"><span>Озеро</span></button>
-                    <button class="wallpaper wallpaper-mountain" data-wallpaper="mountain" type="button"
+                    <button class="wallpaper-card" type="button" data-wallpaper="mountain"
                         aria-label="Горы"><span>Горы</span></button>
-                    <button class="wallpaper wallpaper-forest" data-wallpaper="forest" type="button"
+                    <button class="wallpaper-card" type="button" data-wallpaper="forest"
                         aria-label="Лес"><span>Лес</span></button>
-                    <button class="wallpaper wallpaper-coast" data-wallpaper="coast" type="button"
+                    <button class="wallpaper-card" type="button" data-wallpaper="coast"
                         aria-label="Море"><span>Море</span></button>
-                    <button class="wallpaper wallpaper-valley" data-wallpaper="valley" type="button"
-                        aria-label="Природа"><span>Природа</span></button>
-                    <button class="wallpaper wallpaper-sunset" data-wallpaper="sunset" type="button"
+                    <button class="wallpaper-card" type="button" data-wallpaper="valley"
+                        aria-label="Долина"><span>Долина</span></button>
+                    <button class="wallpaper-card" type="button" data-wallpaper="sunset"
                         aria-label="Закат"><span>Закат</span></button>
-                    <button class="wallpaper wallpaper-waterfall" data-wallpaper="waterfall" type="button"
+                    <button class="wallpaper-card" type="button" data-wallpaper="waterfall"
                         aria-label="Водопад"><span>Водопад</span></button>
-                    <button class="wallpaper wallpaper-desert" data-wallpaper="desert" type="button"
+                    <button class="wallpaper-card" type="button" data-wallpaper="desert"
                         aria-label="Пустыня"><span>Пустыня</span></button>
-                    <button class="wallpaper wallpaper-snow" data-wallpaper="snow" type="button"
-                        aria-label="Снежные горы"><span>Снежные горы</span></button>
-                    <button class="wallpaper wallpaper-garden" data-wallpaper="garden" type="button"
-                        aria-label="Зелёный пейзаж"><span>Зелёный пейзаж</span></button>
+                    <button class="wallpaper-card" type="button" data-wallpaper="snow"
+                        aria-label="Снег"><span>Снег</span></button>
+                    <button class="wallpaper-card" type="button" data-wallpaper="garden"
+                        aria-label="Природа"><span>Природа</span></button>
                 </div>
 
                 <div class="wallpaper-actions">
-                    <button id="uploadWallpaper" type="button">
-                        <i class="fa-regular fa-image"></i>
-                        <span>Свои обои</span>
-                    </button>
+                    <label class="upload-wallpaper" for="wallpaperUpload">
+                        <i class="fa-regular fa-image" aria-hidden="true"></i>
+                        Свои обои
+                    </label>
 
-                    <button id="resetDefaults" type="button">
-                        <i class="fa-solid fa-rotate-left"></i>
-                        <span>По умолчанию</span>
-                    </button>
+                    <input type="file" id="wallpaperUpload" accept="image/*">
+
+                    <button class="reset-button" id="resetDefaults" type="button">По умолчанию</button>
                 </div>
-
-                <input type="file" id="wallpaperInput" accept="image/*" hidden>
             </section>
 
             <footer class="settings-footer">
                 <strong>Ashan.Inc © 2025–2026</strong>
                 <span>Все права защищены.</span>
-                <small>Названия сервисов и товарные знаки принадлежат их владельцам. Создано для удобного
-                    поиска.</small>
             </footer>
-
         </aside>
     </div>
 
-    <script src="script.js"></script>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 
 </html>
