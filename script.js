@@ -12,7 +12,8 @@
         {
             id: "google",
             name: "Google",
-            logo: "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/250px-Google_Favicon_2025.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+            symbol: "G",
+            logo: "https://www.google.com/s2/favicons?domain=google.com&sz=64",
             domain: "google.com",
             color: "#4285f4",
             url: "https://www.google.com/search?q="
@@ -20,7 +21,8 @@
         {
             id: "yandex",
             name: "Yandex",
-            logo: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/80/Yandex_Browser_logo.svg/960px-Yandex_Browser_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20171118053753",
+            symbol: "Я",
+            logo: "https://www.google.com/s2/favicons?domain=yandex.com&sz=64",
             domain: "yandex.com",
             color: "#fc3f1d",
             url: "https://yandex.com/search/?text="
@@ -28,7 +30,8 @@
         {
             id: "duckduckgo",
             name: "DuckDuckGo",
-            logo: "https://upload.wikimedia.org/wikipedia/en/9/90/The_DuckDuckGo_Duck.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
+            symbol: "D",
+            logo: "https://www.google.com/s2/favicons?domain=duckduckgo.com&sz=64",
             domain: "duckduckgo.com",
             color: "#de5833",
             url: "https://duckduckgo.com/?q="
@@ -36,7 +39,8 @@
         {
             id: "bing",
             name: "Bing",
-            logo: "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Bing_Logo.svg/3840px-Bing_Logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+            symbol: "b",
+            logo: "https://www.google.com/s2/favicons?domain=bing.com&sz=64",
             domain: "bing.com",
             color: "#008373",
             url: "https://www.bing.com/search?q="
@@ -44,7 +48,8 @@
         {
             id: "yahoo",
             name: "Yahoo",
-            logo: "https://images.seeklogo.com/logo-png/50/2/yahoo-logo-png_seeklogo-503090.png",
+            symbol: "Y",
+            logo: "https://www.google.com/s2/favicons?domain=yahoo.com&sz=64",
             domain: "search.yahoo.com",
             color: "#6001d2",
             url: "https://search.yahoo.com/search?p="
@@ -52,6 +57,7 @@
         {
             id: "brave",
             name: "Brave",
+            symbol: "B",
             logo: "https://www.google.com/s2/favicons?domain=search.brave.com&sz=64",
             domain: "search.brave.com",
             color: "#fb542b",
@@ -60,6 +66,7 @@
         {
             id: "ecosia",
             name: "Ecosia",
+            symbol: "E",
             logo: "https://www.google.com/s2/favicons?domain=ecosia.org&sz=64",
             domain: "ecosia.org",
             color: "#438b45",
@@ -68,6 +75,7 @@
         {
             id: "startpage",
             name: "Startpage",
+            symbol: "S",
             logo: "https://www.google.com/s2/favicons?domain=startpage.com&sz=64",
             domain: "startpage.com",
             color: "#5374d8",
@@ -76,6 +84,7 @@
         {
             id: "qwant",
             name: "Qwant",
+            symbol: "Q",
             logo: "https://www.google.com/s2/favicons?domain=qwant.com&sz=64",
             domain: "qwant.com",
             color: "#5c3bdb",
@@ -84,6 +93,7 @@
         {
             id: "mojeek",
             name: "Mojeek",
+            symbol: "M",
             logo: "https://www.google.com/s2/favicons?domain=mojeek.com&sz=64",
             domain: "mojeek.com",
             color: "#fa6a36",
@@ -92,6 +102,7 @@
         {
             id: "you",
             name: "You.com AI",
+            symbol: "AI",
             logo: "https://www.google.com/s2/favicons?domain=you.com&sz=64",
             domain: "you.com",
             color: "#6558d3",
@@ -100,6 +111,7 @@
         {
             id: "perplexity",
             name: "Perplexity",
+            symbol: "P",
             logo: "https://www.google.com/s2/favicons?domain=perplexity.ai&sz=64",
             domain: "perplexity.ai",
             color: "#20808d",
@@ -989,6 +1001,7 @@
         image.alt = "";
         image.setAttribute("aria-hidden", "true");
         image.src = engine.logo;
+
         logo.style.position = "relative";
         logo.style.overflow = "hidden";
 
@@ -1014,6 +1027,7 @@
             }
 
             removeClass(logo, "has-image");
+            logo.textContent = engine.symbol;
         };
 
         logo.appendChild(image);
@@ -1460,29 +1474,23 @@
 
     function getElements() {
         elements.background = getElement("#background");
-        elements.settingsToggle = getElement("#settingsToggle, .settings-toggle");
+        elements.settingsToggle = getElement("#settingsToggle");
         elements.settingsOverlay = getElement("#settingsOverlay");
         elements.settingsWindow = getElement("#settingsWindow");
         elements.closeSettings = getElement("#closeSettings, #settingsClose, .settings-close, [data-close-settings]");
-
         elements.searchForm = getElement("#searchForm");
         elements.searchInput = getElement("#searchInput");
         elements.voiceButton = getElement("#voiceButton");
-
         elements.currentEngine = getElement("#currentEngine");
         elements.currentEngineName = getElement("#currentEngineName");
-
         elements.clock = getElement("#clock");
         elements.date = getElement("#date");
         elements.greeting = getElement("#greeting");
-
         elements.engines = getElement("#engines");
         elements.themeControls = getElement("#themeControls");
-
         elements.glassNumber = getElement("#glassNumber");
         elements.glassRange = getElement("#glassRange");
         elements.animationsToggle = getElement("#animationsToggle");
-
         elements.wallpapers = getElement("#wallpapers");
         elements.wallpaperUpload = getElement("#wallpaperUpload");
         elements.resetDefaults = getElement("#resetDefaults");
@@ -1498,7 +1506,11 @@
 
         customWallpaperData = getSaved("customWallpaper") || "";
 
-        if (savedEngine && findEngine(savedEngine)) {
+        if (savedEngine === "chatgpt") {
+            savedEngine = "you";
+        }
+
+        if (savedEngine && findEngine(savedEngine).id === savedEngine) {
             activeEngine = savedEngine;
         } else {
             activeEngine = DEFAULT_ENGINE;
