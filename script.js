@@ -13,7 +13,7 @@
             id: "google",
             name: "Google",
             symbol: "G",
-            logo: "https://www.google.com/s2/favicons?domain=google.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%234285F4' d='M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z'/><path fill='%2334A853' d='M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.17 21.32 7.23 24 12 24z'/><path fill='%23FBBC05' d='M5.27 14.24c-.25-.72-.38-1.5-.38-2.24s.13-1.52.38-2.24V6.61H1.18C.43 8.13 0 9.83 0 12s.43 3.87 1.18 5.39l4.09-3.15z'/><path fill='%23EA4335' d='M12 4.75c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.23 0 3.17 2.68 1.18 6.61l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z'/></svg>",
             domain: "google.com",
             color: "#4285f4",
             url: "https://www.google.com/search?q="
@@ -22,7 +22,7 @@
             id: "yandex",
             name: "Yandex",
             symbol: "Я",
-            logo: "https://www.google.com/s2/favicons?domain=yandex.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23FC3F1D' d='M13.2 2.4h-2.1L4.8 21.6h3.4l1.4-3.8h5.3l1.4 3.8h3.5L13.2 2.4zm-1.8 11.2l1.9-5.3 1.9 5.3h-3.8z'/></svg>",
             domain: "yandex.com",
             color: "#fc3f1d",
             url: "https://yandex.com/search/?text="
@@ -31,7 +31,7 @@
             id: "duckduckgo",
             name: "DuckDuckGo",
             symbol: "D",
-            logo: "https://www.google.com/s2/favicons?domain=duckduckgo.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23DE5833' d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm3.6 15.3c-.6.6-1.5.9-2.7.9h-3V8.1h3c1.2 0 2.1.3 2.7.9.6.6.9 1.5.9 2.7 0 1.2-.3 2.1-.9 2.7z'/></svg>",
             domain: "duckduckgo.com",
             color: "#de5833",
             url: "https://duckduckgo.com/?q="
@@ -40,7 +40,7 @@
             id: "bing",
             name: "Bing",
             symbol: "b",
-            logo: "https://www.google.com/s2/favicons?domain=bing.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23008373' d='M4.5 3v18l7.5-3.3v-11L4.5 3z'/></svg>",
             domain: "bing.com",
             color: "#008373",
             url: "https://www.bing.com/search?q="
@@ -49,7 +49,7 @@
             id: "yahoo",
             name: "Yahoo",
             symbol: "Y",
-            logo: "https://www.google.com/s2/favicons?domain=yahoo.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%236001D2' d='M13.2 12.6L19.2 3h-3.3l-4 7.1L7.9 3H4.6l6 9.6v8.4h2.6v-8.4z'/></svg>",
             domain: "search.yahoo.com",
             color: "#6001d2",
             url: "https://search.yahoo.com/search?p="
@@ -58,7 +58,7 @@
             id: "brave",
             name: "Brave",
             symbol: "B",
-            logo: "https://www.google.com/s2/favicons?domain=search.brave.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23FB542B' d='M12 2L3 6v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V6l-9-4z'/></svg>",
             domain: "search.brave.com",
             color: "#fb542b",
             url: "https://search.brave.com/search?q="
@@ -67,7 +67,7 @@
             id: "ecosia",
             name: "Ecosia",
             symbol: "E",
-            logo: "https://www.google.com/s2/favicons?domain=ecosia.org&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23438B45' d='M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1 15v-4H7v-2h4V7h2v4h4v2h-4v4h-2z'/></svg>",
             domain: "ecosia.org",
             color: "#438b45",
             url: "https://www.ecosia.org/search?q="
@@ -76,7 +76,7 @@
             id: "startpage",
             name: "Startpage",
             symbol: "S",
-            logo: "https://www.google.com/s2/favicons?domain=startpage.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%235374D8' d='M12 2a10 10 0 100 20 10 10 0 000-20zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z'/></svg>",
             domain: "startpage.com",
             color: "#5374d8",
             url: "https://www.startpage.com/sp/search?query="
@@ -85,7 +85,7 @@
             id: "qwant",
             name: "Qwant",
             symbol: "Q",
-            logo: "https://www.google.com/s2/favicons?domain=qwant.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%235C3BDB' d='M12 2a10 10 0 100 20 10 10 0 000-20zm0 15a5 5 0 110-10 5 5 0 010 10z'/></svg>",
             domain: "qwant.com",
             color: "#5c3bdb",
             url: "https://www.qwant.com/?q="
@@ -94,7 +94,7 @@
             id: "mojeek",
             name: "Mojeek",
             symbol: "M",
-            logo: "https://www.google.com/s2/favicons?domain=mojeek.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23FA6A36' d='M3 5h3l3 7 3-7h3l-5 14H8L3 5z'/></svg>",
             domain: "mojeek.com",
             color: "#fa6a36",
             url: "https://www.mojeek.com/search?q="
@@ -103,7 +103,7 @@
             id: "you",
             name: "You.com AI",
             symbol: "AI",
-            logo: "https://www.google.com/s2/favicons?domain=you.com&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%236558D3' d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>",
             domain: "you.com",
             color: "#6558d3",
             url: "https://you.com/search?q="
@@ -112,7 +112,7 @@
             id: "perplexity",
             name: "Perplexity",
             symbol: "P",
-            logo: "https://www.google.com/s2/favicons?domain=perplexity.ai&sz=64",
+            logo: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%2320808D' d='M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z'/></svg>",
             domain: "perplexity.ai",
             color: "#20808d",
             url: "https://www.perplexity.ai/search?q="
